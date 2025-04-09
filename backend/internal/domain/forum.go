@@ -9,16 +9,16 @@ type Forum struct {
 	Title      string
 	Content    string
 	Category   ForumCategory
-	Comments   []ForumComments
+	Comments   []ForumComment
 }
 
 type ForumCategory struct {
 	gorm.Model
-	Name   string `gorm:"unique"`
-	Forums []Forum
+	Name   string  `gorm:"unique"`
+	Forums []Forum `gorm:"foreignKey:CategoryID"`
 }
 
-type ForumComments struct {
+type ForumComment struct {
 	gorm.Model
 	UserID  uint
 	ForumID uint

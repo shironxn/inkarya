@@ -1,9 +1,6 @@
 package domain
 
 import (
-	"github.com/shironxn/inkarya/internal/domain/disability"
-	"github.com/shironxn/inkarya/internal/domain/post"
-	"github.com/shironxn/inkarya/internal/domain/skill"
 	"gorm.io/gorm"
 )
 
@@ -20,9 +17,17 @@ type User struct {
 	Status       *string
 	Availability *string
 	ResumeURL    *string
-	Skills       []skill.Skill           `gorm:"many2many:users_skills;"`
-	Disabilities []disability.Disability `gorm:"many2many:users_disabilities;"`
-	Posts        []post.Post
-	PostComments []post.PostComments
-	PostLikes    []post.PostLikes
+
+	// Many-to-Many
+	Skills       []Skill      `gorm:"many2many:user_skills;"`
+	Disabilities []Disability `gorm:"many2many:user_disabilities;"`
+
+	// One-to-Many
+	Posts        []Post
+	PostComments []PostComment
+	PostLikes    []PostLike
+
+	// Many-to-Many (via pivot model)
+	JobApplications []JobApplication
+	SavedJobs       []SavedJob
 }

@@ -19,11 +19,21 @@ type Job struct {
 	Education   string
 	SalaryMin   *int
 	SalaryMax   *int
+
+	// Many-to-Many
+	SavedJobs    []SavedJob
+	Applications []JobApplication
 }
 
-type JobApplications struct {
+type JobApplication struct {
 	gorm.Model
-	UserID       uint
-	JobID        uint
-	CourseStatus `gorm:"type:enum('pending', 'accepted', 'rejected');default:'pending'"`
+	UserID    uint
+	JobID     uint
+	JobStatus JobStatus `gorm:"default:'pending'"`
+}
+
+type SavedJob struct {
+	gorm.Model
+	UserID uint
+	JobID  uint
 }

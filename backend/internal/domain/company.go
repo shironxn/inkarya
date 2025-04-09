@@ -1,7 +1,6 @@
 package domain
 
 import (
-	"github.com/shironxn/inkarya/internal/domain/job"
 	"gorm.io/gorm"
 )
 
@@ -11,5 +10,5 @@ type Company struct {
 	AvatarURL   string
 	Location    string
 	Description string
-	Jobs        []job.Job
+	Jobs        []Job
 }

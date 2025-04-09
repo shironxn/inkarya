@@ -10,14 +10,14 @@ type Post struct {
 	ImageUrl string
 }
 
-type PostComments struct {
+type PostComment struct {
 	gorm.Model
 	UserID  uint
 	PostID  uint
 	Content string
 }
 
-type PostLikes struct {
+type PostLike struct {
 	gorm.Model
 	UserID uint
 	PostID uint

@@ -25,8 +25,8 @@ type Course struct {
 
 type CourseCategory struct {
 	gorm.Model
-	Name     string `gorm:"unique"`
-	Couerses []Course
+	Name     string   `gorm:"unique"`
+	Couerses []Course `gorm:"foreignKey:CategoryID"`
 }
 
 type CourseEnrollment struct {
@@ -47,5 +47,5 @@ type UserLesson struct {
 	gorm.Model
 	UserID       uint
 	LessonID     uint
-	CourseStatus `gorm:"type:enum('inactive', 'active', 'completed');default:'inactive'"`
+	CourseStatus CourseStatus `gorm:"default:'inactive'"`
 }
