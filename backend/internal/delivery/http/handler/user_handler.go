@@ -2,7 +2,6 @@ package handler
 
 import (
 	"errors"
-	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -40,7 +39,7 @@ func (h *userHandler) Create(c *fiber.Ctx) error {
 	}
 
 	if err := h.validator.Validate(req); err != nil {
-		return c.Status(http.StatusBadRequest).JSON(dto.Response{
+		return c.Status(fiber.StatusBadRequest).JSON(dto.Response{
 			Success: false,
 			Status:  fiber.StatusBadRequest,
 			Message: "Validation failed",
@@ -62,9 +61,9 @@ func (h *userHandler) Create(c *fiber.Ctx) error {
 		return err
 	}
 
-	return c.Status(http.StatusCreated).JSON(dto.Response{
+	return c.Status(fiber.StatusCreated).JSON(dto.Response{
 		Success: true,
-		Status:  http.StatusCreated,
+		Status:  fiber.StatusCreated,
 		Message: "User created successfully",
 	})
 }
@@ -93,9 +92,9 @@ func (h *userHandler) GetAll(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.Status(http.StatusOK).JSON(dto.Response{
+	return c.Status(fiber.StatusOK).JSON(dto.Response{
 		Success: true,
-		Status:  http.StatusOK,
+		Status:  fiber.StatusOK,
 		Message: "Users retrieved successfully",
 		Data:    users,
 	})
@@ -116,9 +115,9 @@ func (h *userHandler) GetByID(c *fiber.Ctx) error {
 		return err
 	}
 
-	return c.Status(http.StatusOK).JSON(dto.Response{
+	return c.Status(fiber.StatusOK).JSON(dto.Response{
 		Success: true,
-		Status:  http.StatusOK,
+		Status:  fiber.StatusOK,
 		Message: "User retrieved successfully",
 		Data: dto.UserResponse{
 			ID:           data.ID,
@@ -151,7 +150,7 @@ func (h *userHandler) Update(c *fiber.Ctx) error {
 	req.ID = uint(id)
 
 	if err := h.validator.Validate(req); err != nil {
-		return c.Status(http.StatusBadRequest).JSON(dto.Response{
+		return c.Status(fiber.StatusBadRequest).JSON(dto.Response{
 			Success: false,
 			Status:  fiber.StatusBadRequest,
 			Message: "Validation failed",
@@ -173,9 +172,9 @@ func (h *userHandler) Update(c *fiber.Ctx) error {
 		return err
 	}
 
-	return c.Status(http.StatusOK).JSON(dto.Response{
+	return c.Status(fiber.StatusOK).JSON(dto.Response{
 		Success: true,
-		Status:  http.StatusOK,
+		Status:  fiber.StatusOK,
 		Message: "User updated successfully",
 	})
 }
@@ -194,9 +193,9 @@ func (h *userHandler) Delete(c *fiber.Ctx) error {
 		return err
 	}
 
-	return c.Status(http.StatusOK).JSON(dto.Response{
+	return c.Status(fiber.StatusOK).JSON(dto.Response{
 		Success: true,
-		Status:  http.StatusOK,
+		Status:  fiber.StatusOK,
 		Message: "User deleted successfully",
 	})
 }
