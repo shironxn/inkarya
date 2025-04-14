@@ -1,0 +1,1489 @@
+openapi: 3.0.0
+info:
+  title: Inkarya API
+  description: |
+    API documentation for Inkarya - A platform for inclusive employment opportunities
+    
+    ## Categories:
+    - **System**: Health check and system status
+    - **Users**: User profile and account management
+    - **Forums**: Forum discussions, categories, and comments
+    - **Course**: Course management, lessons, and enrollments
+    - **Job**: Job postings and applications
+    - **Post**: Social media posts and comments
+    - **Disability**: Disability type management
+    - **Skill**: Skill type management
+  version: 1.0.0
+  x-tagGroups:
+    - name: System
+      tags:
+        - System
+    - name: Users
+      tags:
+        - Users
+    - name: Forums
+      tags:
+        - Forums
+    - name: Course
+      tags:
+        - Course
+    - name: Job
+      tags:
+        - Job
+    - name: Post
+      tags:
+        - Post
+    - name: Disability
+      tags:
+        - Disability
+    - name: Skill
+      tags:
+        - Skill
+
+servers:
+  - url: /api/v1
+    description: API v1
+
+tags:
+  - name: System
+    description: System health and status endpoints
+  - name: Users
+    description: User profile and account management endpoints
+  - name: Forums
+    description: Forum discussions, categories, and comments management
+  - name: Course
+    description: Course content, lessons, and enrollment management
+  - name: Job
+    description: Job posting and application management
+  - name: Post
+    description: Social media posts and comments management
+  - name: Disability
+    description: Disability type management
+  - name: Skill
+    description: Skill type management
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Response:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [true]
+          default: true
+        status:
+          type: integer
+          enum: [200, 201]
+          description: HTTP status code (200 for OK, 201 for Created)
+        message:
+          type: string
+        data:
+          type: object
+          description: Response data object
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          enum: [false]
+          default: false
+        status:
+          type: integer
+          enum: [400, 401, 403, 404, 409, 500]
+          description: HTTP status code
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/FieldError'
+
+    FieldError:
+      type: object
+      properties:
+        field:
+          type: string
+        message:
+          type: string
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Unique identifier for the user (obtained from authorization token)
+          readOnly: true
+        name:
+          type: string
+          description: Full name of the user
+        email:
+          type: string
+          format: email
+          description: Email address of the user
+        avatar_url:
+          type: string
+          nullable: true
+          description: URL to the user's profile picture
+        bio:
+          type: string
+          nullable: true
+          description: Short biography of the user
+        interest:
+          type: string
+          description: User's areas of interest
+        dob:
+          type: string
+          format: date
+          description: Date of birth of the user
+        phone:
+          type: string
+          nullable: true
+          description: Contact phone number of the user
+        location:
+          type: string
+          description: Current location of the user
+        status:
+          type: string
+          nullable: true
+          description: Current employment status of the user
+        availability:
+          type: string
+          nullable: true
+          description: User's availability status
+        resume_url:
+          type: string
+          nullable: true
+          description: URL to the user's resume
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the user was created
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the user was last updated
+          readOnly: true
+      required:
+        - name
+        - email
+        - phone
+
+    Forum:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        title:
+          type: string
+        content:
+          type: string
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Automatically set from authorization token
+        category_id:
+          type: integer
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        name:
+          type: string
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        content:
+          type: string
+        forum_id:
+          type: integer
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Automatically set from authorization token
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+    Course:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        title:
+          type: string
+        description:
+          type: string
+        image_url:
+          type: string
+        category_id:
+          type: integer
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+    Lesson:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        title:
+          type: string
+        content:
+          type: string
+        course_id:
+          type: integer
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+    Job:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        company_id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        location:
+          type: string
+        education:
+          type: string
+        salary_min:
+          type: number
+        salary_max:
+          type: number
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+    Company:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        name:
+          type: string
+        avatar_url:
+          type: string
+          nullable: true
+        location:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        title:
+          type: string
+        content:
+          type: string
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Automatically set from authorization token
+        image_url:
+          type: string
+          nullable: true
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+    PostComment:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        content:
+          type: string
+        post_id:
+          type: integer
+        user_id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Automatically set from authorization token
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+    Disability:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+    Skill:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+          description: System-generated unique identifier
+        name:
+          type: string
+        description:
+          type: string
+        created_at:
+          type: string
+          readOnly: true
+          description: Automatically set on creation
+        updated_at:
+          type: string
+          readOnly: true
+          description: Automatically updated on modification
+
+paths:
+  /health:
+    get:
+      tags:
+        - System
+      summary: Check system health
+      description: Returns the health status of the system
+      responses:
+        '200':
+          description: System is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /users:
+    get:
+      tags:
+        - Users
+      summary: Get all users
+      description: Returns a list of all users
+      responses:
+        '200':
+          description: List of users
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    post:
+      tags:
+        - Users
+      summary: Create a new user
+      description: Creates a new user profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    put:
+      tags:
+        - Users
+      summary: Update user
+      description: Updates the current user's profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: User updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      tags:
+        - Users
+      summary: Delete user
+      description: Deletes the current user's profile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: User deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      description: Returns a user by their ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: User found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /profile:
+    get:
+      tags:
+        - Users
+      summary: Get current user profile
+      description: Returns the current user's profile
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Current user profile
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: User not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /profile/enroll:
+    get:
+      tags:
+        - Course
+      summary: Get current user enrollments
+      description: Returns all courses the current user is enrolled in
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of user enrollments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /profile/jobs:
+    get:
+      tags:
+        - Job
+      summary: Get current user job applications
+      description: Returns all job applications for the current user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of user job applications
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /forums:
+    get:
+      tags:
+        - Forums
+      summary: Get all forums
+      description: Returns a list of all forums
+      responses:
+        '200':
+          description: List of forums
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    post:
+      tags:
+        - Forums
+      summary: Create a new forum
+      description: Creates a new forum discussion
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Forum'
+      responses:
+        '201':
+          description: Forum created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /forums/{id}:
+    get:
+      tags:
+        - Forums
+      summary: Get forum by ID
+      description: Returns a forum by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Forum found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: Forum not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - Forums
+      summary: Update forum
+      description: Updates a forum discussion
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Forum'
+      responses:
+        '200':
+          description: Forum updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      tags:
+        - Forums
+      summary: Delete forum
+      description: Deletes a forum discussion
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Forum deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /forums/categories:
+    get:
+      tags:
+        - Forums
+      summary: Get all forum categories
+      description: Returns a list of all forum categories
+      responses:
+        '200':
+          description: List of forum categories
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /forums/{id}/comments:
+    get:
+      tags:
+        - Forums
+      summary: Get forum comments
+      description: Returns all comments for a forum
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of forum comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /forums/comments:
+    post:
+      tags:
+        - Forums
+      summary: Create a forum comment
+      description: Creates a new comment on a forum
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '201':
+          description: Comment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    put:
+      tags:
+        - Forums
+      summary: Update forum comment
+      description: Updates a forum comment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Comment'
+      responses:
+        '200':
+          description: Comment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      tags:
+        - Forums
+      summary: Delete forum comment
+      description: Deletes a forum comment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Comment deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /courses:
+    get:
+      tags:
+        - Course
+      summary: Get all courses
+      description: Returns a list of all courses
+      responses:
+        '200':
+          description: List of courses
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /courses/{id}:
+    get:
+      tags:
+        - Course
+      summary: Get course by ID
+      description: Returns a course by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Course found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: Course not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /courses/{id}/lessons/{lesson_id}:
+    get:
+      tags:
+        - Course
+      summary: Get lesson by ID
+      description: Returns a lesson by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: lesson_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lesson found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: Lesson not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /courses/{id}/enroll:
+    get:
+      tags:
+        - Course
+      summary: Get course enrollments
+      description: Returns all enrollments for a course
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of course enrollments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    post:
+      tags:
+        - Course
+      summary: Enroll in a course
+      description: Enrolls the current user in a course
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Successfully enrolled in course
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      tags:
+        - Course
+      summary: Unenroll from a course
+      description: Unenrolls the current user from a course
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully unenrolled from course
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /jobs:
+    get:
+      tags:
+        - Job
+      summary: Get all jobs
+      description: Returns a list of all jobs
+      responses:
+        '200':
+          description: List of jobs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /jobs/search:
+    get:
+      tags:
+        - Job
+      summary: Search jobs
+      description: Search for jobs based on query
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of matching jobs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /jobs/{id}:
+    get:
+      tags:
+        - Job
+      summary: Get job by ID
+      description: Returns a job by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Job found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: Job not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /jobs/company/{id}:
+    get:
+      tags:
+        - Job
+      summary: Get jobs by company
+      description: Returns all jobs for a company
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of company jobs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /jobs/applications:
+    get:
+      tags:
+        - Job
+      summary: Get all job applications
+      description: Returns all job applications (admin only)
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of all job applications
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '403':
+          description: Unauthorized access
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /jobs/applications/{id}:
+    get:
+      tags:
+        - Job
+      summary: Get job application by ID
+      description: Returns a specific job application by its ID
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Job application found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: Job application not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      tags:
+        - Job
+      summary: Apply for a job
+      description: Apply for a job posting
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Successfully applied for job
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /jobs/saved:
+    get:
+      tags:
+        - Job
+      summary: Get saved jobs
+      description: Returns all saved jobs for the current user
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: List of saved jobs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /jobs/saved/{id}:
+    post:
+      tags:
+        - Job
+      summary: Save a job
+      description: Saves a job for the current user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '201':
+          description: Job saved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      tags:
+        - Job
+      summary: Unsave a job
+      description: Removes a saved job for the current user
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Job unsaved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /disabilities:
+    get:
+      tags:
+        - Disability
+      summary: Get all disabilities
+      description: Returns a list of all disabilities
+      responses:
+        '200':
+          description: List of disabilities
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /disabilities/{id}:
+    get:
+      tags:
+        - Disability
+      summary: Get disability by ID
+      description: Returns a disability by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Disability found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: Disability not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /skills:
+    get:
+      tags:
+        - Skill
+      summary: Get all skills
+      description: Returns a list of all skills
+      responses:
+        '200':
+          description: List of skills
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /skills/{id}:
+    get:
+      tags:
+        - Skill
+      summary: Get skill by ID
+      description: Returns a skill by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Skill found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: Skill not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /posts:
+    get:
+      tags:
+        - Post
+      summary: Get all posts
+      description: Returns a list of all posts
+      responses:
+        '200':
+          description: List of posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    post:
+      tags:
+        - Post
+      summary: Create a new post
+      description: Creates a new social media post
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '201':
+          description: Post created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /posts/{id}:
+    get:
+      tags:
+        - Post
+      summary: Get post by ID
+      description: Returns a post by its ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Post found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: Post not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    put:
+      tags:
+        - Post
+      summary: Update post
+      description: Updates a post
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Post'
+      responses:
+        '200':
+          description: Post updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      tags:
+        - Post
+      summary: Delete post
+      description: Deletes a post
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Post deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /posts/{id}/comments:
+    get:
+      tags:
+        - Post
+      summary: Get post comments
+      description: Returns all comments for a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: List of post comments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /posts/comments:
+    post:
+      tags:
+        - Post
+      summary: Create a post comment
+      description: Creates a new comment on a post
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostComment'
+      responses:
+        '201':
+          description: Comment created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    put:
+      tags:
+        - Post
+      summary: Update post comment
+      description: Updates a post comment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostComment'
+      responses:
+        '200':
+          description: Comment updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+    delete:
+      tags:
+        - Post
+      summary: Delete post comment
+      description: Deletes a post comment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Comment deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '404':
+          description: Comment not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /posts/{id}/like:
+    post:
+      tags:
+        - Post
+      summary: Like a post
+      description: Likes a post
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Post liked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+
+  /posts/{id}/unlike:
+    post:
+      tags:
+        - Post
+      summary: Unlike a post
+      description: Unlikes a post
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Post unliked successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response' 
