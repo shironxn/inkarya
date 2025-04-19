@@ -4,4 +4,9 @@ import { StackServerApp } from "@stackframe/stack";
 
 export const stackServerApp = new StackServerApp({
   tokenStore: "nextjs-cookie",
+  urls: {
+    signIn: "/masuk",
+    signUp: "/daftar",
+    forgotPassword: "/lupa-password",
+  },
 });
