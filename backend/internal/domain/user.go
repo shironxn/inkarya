@@ -9,15 +9,15 @@ import (
 
 type User struct {
 	ID           uuid.UUID `gorm:"type:uuid;primary_key"`
-	Name         string    `gorm:"not null" `
-	Email        string    `gorm:"unique;not null" `
+	Name         string    `gorm:"not null"`
+	Email        string    `gorm:"unique" `
 	AvatarURL    string
 	Bio          string
-	Interest     string
-	DOB          string
-	Phone        string `gorm:"unique;not null"`
-	Location     string
-	Status       string `gorm:"default:active"`
+	Interest     string `gorm:"not null"`
+	DOB          string `gorm:"not null"`
+	Phone        string `gorm:"unique"`
+	Location     string `gorm:"not null"`
+	Status       string
 	Availability string
 	ResumeURL    string
 	CreatedAt    time.Time

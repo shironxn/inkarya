@@ -33,7 +33,7 @@ func (r *userRepository) CreateUser(user *domain.User) error {
 
 func (r *userRepository) FindAllUsers() ([]domain.User, error) {
 	var users []domain.User
-	if err := r.DB.Find(&users).Error; err != nil {
+	if err := r.DB.Preload("Skills").Preload("Disabilities").Find(&users).Error; err != nil {
 		return nil, err
 	}
 	return users, nil
@@ -41,14 +41,36 @@ func (r *userRepository) FindAllUsers() ([]domain.User, error) {
 
 func (r *userRepository) FindUserByID(id uuid.UUID) (*domain.User, error) {
 	var user domain.User
-	if err := r.DB.First(&user, "id = ?", id).Error; err != nil {
+	if err := r.DB.Preload("Skills").Preload("Disabilities").First(&user, "id = ?", id).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
 }
 
 func (r *userRepository) UpdateUser(user *domain.User) error {
-	return r.DB.Updates(&user).Error
+	// Start a transaction
+	tx := r.DB.Begin()
+	if tx.Error != nil {
+		return tx.Error
+	}
+
+	// Clear existing relationships
+	if err := tx.Model(user).Association("Skills").Clear(); err != nil {
+		tx.Rollback()
+		return err
+	}
+	if err := tx.Model(user).Association("Disabilities").Clear(); err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// Update user and its relationships
+	if err := tx.Save(user).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 
 func (r *userRepository) DeleteUser(id uuid.UUID) error {

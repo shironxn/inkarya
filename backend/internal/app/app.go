@@ -100,7 +100,7 @@ func NewApp() (*App, error) {
 
 	// Initialize services
 	logger.Debug("Initializing services")
-	userService := service.NewUserService(userRepository)
+	userService := service.NewUserService(userRepository, skillRepository, disabilityRepository)
 	forumService := service.NewForumService(forumRepository)
 	courseService := service.NewCourseService(courseRepository)
 	jobService := service.NewJobService(jobRepository)

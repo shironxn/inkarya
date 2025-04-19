@@ -8,6 +8,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/shironxn/inkarya/internal/delivery/http/dto"
+	"github.com/shironxn/inkarya/internal/domain"
 	"github.com/shironxn/inkarya/internal/service"
 	"github.com/shironxn/inkarya/pkg"
 	"gorm.io/gorm"
@@ -102,6 +103,8 @@ func (h *userHandler) GetAllUsers(c *fiber.Ctx) error {
 			Status:       user.Status,
 			Availability: user.Availability,
 			ResumeURL:    user.ResumeURL,
+			Skills:       convertSkillsToResponse(user.Skills),
+			Disabilities: convertDisabilitiesToResponse(user.Disabilities),
 			CreatedAt:    user.CreatedAt,
 			UpdatedAt:    user.UpdatedAt,
 		})
@@ -147,6 +150,8 @@ func (h *userHandler) GetUserByID(c *fiber.Ctx) error {
 			Status:       user.Status,
 			Availability: user.Availability,
 			ResumeURL:    user.ResumeURL,
+			Skills:       convertSkillsToResponse(user.Skills),
+			Disabilities: convertDisabilitiesToResponse(user.Disabilities),
 			CreatedAt:    user.CreatedAt,
 			UpdatedAt:    user.UpdatedAt,
 		},
@@ -254,8 +259,32 @@ func (h *userHandler) GetMe(c *fiber.Ctx) error {
 			Status:       user.Status,
 			Availability: user.Availability,
 			ResumeURL:    user.ResumeURL,
+			Skills:       convertSkillsToResponse(user.Skills),
+			Disabilities: convertDisabilitiesToResponse(user.Disabilities),
 			CreatedAt:    user.CreatedAt,
 			UpdatedAt:    user.UpdatedAt,
 		},
 	})
+}
+
+func convertSkillsToResponse(skills []domain.Skill) []dto.SkillResponse {
+	var result []dto.SkillResponse
+	for _, skill := range skills {
+		result = append(result, dto.SkillResponse{
+			ID:   skill.ID,
+			Name: skill.Name,
+		})
+	}
+	return result
+}
+
+func convertDisabilitiesToResponse(disabilities []domain.Disability) []dto.DisabilityResponse {
+	var result []dto.DisabilityResponse
+	for _, disability := range disabilities {
+		result = append(result, dto.DisabilityResponse{
+			ID:   disability.ID,
+			Name: disability.Name,
+		})
+	}
+	return result
 }
