@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Accordion,
   AccordionContent,
@@ -15,6 +17,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 export default function Home() {
   return (
@@ -22,8 +25,13 @@ export default function Home() {
       {/* Hero Section */}
       <section className="py-16 md:py-24">
         <div className="container px-4 mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center text-center md:text-left">
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0, x: -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
               <h1>
                 Siap Menjadi Bagian dari Gerakan Inklusif?
               </h1>
@@ -31,7 +39,7 @@ export default function Home() {
                 Bergabunglah dengan InKarya dan mulai perjalanan karier Anda –
                 tanpa batasan.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <div className="flex justify-center md:justify-start gap-4 pt-4">
                 <Link href="/masuk">
                   <Button className="bg-[#ff8c42] hover:bg-[#ff8c42]/90 text-white px-8 py-6">
                     Masuk
@@ -46,8 +54,13 @@ export default function Home() {
                   </Button>
                 </Link>
               </div>
-            </div>
-            <div className="flex justify-center">
+            </motion.div>
+            <motion.div 
+              className="flex justify-center"
+              initial={{ opacity: 0, x: 50 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+            >
               <Image
                 src="/home/collaborate.svg"
                 alt="Ilustrasi Inklusif"
@@ -55,14 +68,20 @@ export default function Home() {
                 height={400}
                 className="w-full max-w-[500px]"
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* About Section */}
       <section id="tentang-kami" className="py-24 bg-white">
-        <div className="container px-4 mx-auto text-center">
+        <motion.div 
+          className="container px-4 mx-auto text-center"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
           <h2 className="mb-8">
             Apa itu InKarya?
           </h2>
@@ -72,14 +91,20 @@ export default function Home() {
             talenta luar biasa dengan perusahaan yang berkomitmen terhadap
             kesetaraan.
           </p>
-        </div>
+        </motion.div>
       </section>
 
       {/* Features Section */}
       <section className="py-16 md:py-24">
         <div className="container px-4 mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="flex justify-center">
+            <motion.div 
+              className="flex justify-center"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
               <Image
                 src="/home/feature.svg"
                 alt="Fitur Ilustrasi"
@@ -87,13 +112,25 @@ export default function Home() {
                 height={400}
                 className="w-full max-w-[400px]"
               />
-            </div>
-            <div className="space-y-8">
+            </motion.div>
+            <motion.div 
+              className="space-y-8"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
               <h2>
                 Fitur-Fitur yang Tersedia
               </h2>
               <div className="space-y-6">
-                <div className="flex items-start gap-4">
+                <motion.div 
+                  className="flex items-start gap-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  viewport={{ once: true }}
+                >
                   <div className="bg-[#ff8c42]/10 p-3 rounded-lg">
                     <Cpu className="h-6 w-6 text-[#ff8c42]" />
                   </div>
@@ -106,8 +143,14 @@ export default function Home() {
                       lowongan yang tepat.
                     </p>
                   </div>
-                </div>
-                <div className="flex items-start gap-4">
+                </motion.div>
+                <motion.div 
+                  className="flex items-start gap-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
                   <div className="bg-[#4f46e5]/10 p-3 rounded-lg">
                     <Accessibility className="h-6 w-6 text-[#4f46e5]" />
                   </div>
@@ -120,8 +163,14 @@ export default function Home() {
                       disabilitas.
                     </p>
                   </div>
-                </div>
-                <div className="flex items-start gap-4">
+                </motion.div>
+                <motion.div 
+                  className="flex items-start gap-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
+                  viewport={{ once: true }}
+                >
                   <div className="bg-[#10b981]/10 p-3 rounded-lg">
                     <Award className="h-6 w-6 text-[#10b981]" />
                   </div>
@@ -134,8 +183,14 @@ export default function Home() {
                       Anda.
                     </p>
                   </div>
-                </div>
-                <div className="flex items-start gap-4">
+                </motion.div>
+                <motion.div 
+                  className="flex items-start gap-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                  viewport={{ once: true }}
+                >
                   <div className="bg-[#8b5cf6]/10 p-3 rounded-lg">
                     <CheckCircle className="h-6 w-6 text-[#8b5cf6]" />
                   </div>
@@ -148,8 +203,14 @@ export default function Home() {
                       kerja yang inklusif.
                     </p>
                   </div>
-                </div>
-                <div className="flex items-start gap-4">
+                </motion.div>
+                <motion.div 
+                  className="flex items-start gap-4"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 }}
+                  viewport={{ once: true }}
+                >
                   <div className="bg-[#ec4899]/10 p-3 rounded-lg">
                     <Users className="h-6 w-6 text-[#ec4899]" />
                   </div>
@@ -162,9 +223,9 @@ export default function Home() {
                       perjalanan karier Anda.
                     </p>
                   </div>
-                </div>
+                </motion.div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -172,34 +233,64 @@ export default function Home() {
       {/* Stats Section */}
       <section className="py-16 bg-white">
         <div className="container px-4 mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center font-inter">
+          <motion.h2 
+            className="text-3xl md:text-4xl font-bold mb-12 text-center font-inter"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
             Statistik InKarya
-          </h2>
+          </motion.h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="flex flex-col items-center text-center space-y-2">
+            <motion.div 
+              className="flex flex-col items-center text-center space-y-2"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              viewport={{ once: true }}
+            >
               <div className="text-[#ff8c42] mb-2">⭐</div>
               <h3 className="text-3xl font-bold font-inter">1.200+</h3>
               <p className="text-gray-600 font-poppins">Pengguna aktif</p>
-            </div>
-            <div className="flex flex-col items-center text-center space-y-2">
+            </motion.div>
+            <motion.div 
+              className="flex flex-col items-center text-center space-y-2"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
               <div className="text-[#4f46e5] mb-2">🏢</div>
               <h3 className="text-3xl font-bold font-inter">100+</h3>
               <p className="text-gray-600 font-poppins">
                 Perusahaan inklusif terdaftar
               </p>
-            </div>
-            <div className="flex flex-col items-center text-center space-y-2">
+            </motion.div>
+            <motion.div 
+              className="flex flex-col items-center text-center space-y-2"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
               <div className="text-[#10b981] mb-2">📚</div>
               <h3 className="text-3xl font-bold font-inter">250+</h3>
               <p className="text-gray-600 font-poppins">Kursus tersedia</p>
-            </div>
-            <div className="flex flex-col items-center text-center space-y-2">
+            </motion.div>
+            <motion.div 
+              className="flex flex-col items-center text-center space-y-2"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
               <div className="text-[#ec4899] mb-2">❤️</div>
               <h3 className="text-3xl font-bold font-inter">98%</h3>
               <p className="text-gray-600 font-poppins">
                 pengguna merasa lebih percaya diri
               </p>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -207,12 +298,30 @@ export default function Home() {
       {/* Testimonials Section */}
       <section className="py-16 md:py-24">
         <div className="container px-4 mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 font-inter">
+          <motion.h2 
+            className="text-3xl md:text-4xl font-bold mb-12 font-inter"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
             Testimoni Pengguna
-          </h2>
+          </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="bg-white p-6 rounded-lg shadow-sm border">
+            <motion.div 
+              className="space-y-8"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <motion.div 
+                className="bg-white p-6 rounded-lg shadow-sm border"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                viewport={{ once: true }}
+              >
                 <div className="flex items-center gap-4 mb-4">
                   <div className="bg-[#ff8c42]/10 p-2 rounded-full">
                     <MessageSquare className="h-5 w-5 text-[#ff8c42]" />
@@ -227,8 +336,14 @@ export default function Home() {
                     — Andi, Junior Frontend Developer
                   </p>
                 </div>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-sm border">
+              </motion.div>
+              <motion.div 
+                className="bg-white p-6 rounded-lg shadow-sm border"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
                 <div className="flex items-center gap-4 mb-4">
                   <div className="bg-[#4f46e5]/10 p-2 rounded-full">
                     <MessageSquare className="h-5 w-5 text-[#4f46e5]" />
@@ -243,9 +358,15 @@ export default function Home() {
                     — Sinta, penyandang tuli & desainer grafis
                   </p>
                 </div>
-              </div>
-            </div>
-            <div className="flex justify-center">
+              </motion.div>
+            </motion.div>
+            <motion.div 
+              className="flex justify-center"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
               <Image
                 src="/home/testimoni.svg"
                 alt="Testimoni Ilustrasi"
@@ -253,14 +374,20 @@ export default function Home() {
                 height={400}
                 className="w-full max-w-[400px]"
               />
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="py-16 bg-white">
-        <div className="container px-4 mx-auto text-center">
+        <motion.div 
+          className="container px-4 mx-auto text-center"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
           <h2 className="mb-4">
             Masih Belum Yakin?
           </h2>
@@ -282,14 +409,20 @@ export default function Home() {
               </Button>
             </Link>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* FAQ Section */}
       <section className="py-16 md:py-24">
         <div className="container px-4 mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div className="flex justify-center">
+            <motion.div 
+              className="flex justify-center"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
               <Image
                 src="/home/faq.svg"
                 alt="FAQ Ilustrasi"
@@ -297,8 +430,14 @@ export default function Home() {
                 height={400}
                 className="w-full max-w-[400px]"
               />
-            </div>
-            <div className="space-y-6">
+            </motion.div>
+            <motion.div 
+              className="space-y-6"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
               <h2>
                 FAQ
               </h2>
@@ -340,7 +479,7 @@ export default function Home() {
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>

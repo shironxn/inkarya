@@ -1,4 +1,4 @@
-"use server";
+"use client";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -11,8 +11,10 @@ import {
 import { Menu } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
-export default async function Navbar() {
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
   const navItems = ["Lowongan", "Forum", "Kursus"];
   const authItems = [
     { label: "Masuk", href: "/masuk", variant: "ghost" },
@@ -67,7 +69,7 @@ export default async function Navbar() {
         </div>
 
         {/* Mobile Navigation */}
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild>
             <Button variant="ghost" size="icon" className="md:hidden">
               <Menu className="h-5 w-5" />
@@ -76,7 +78,11 @@ export default async function Navbar() {
           </SheetTrigger>
           <SheetContent side="right" className="w-full border-l sm:max-w-sm">
             <SheetHeader className="border-b pb-4">
-              <SheetTitle className="text-lg font-semibold">Menu</SheetTitle>
+              <SheetTitle className="text-lg font-semibold">
+                <Link href="/" onClick={() => setIsOpen(false)}>
+                  <Image src="/icons/inkarya.svg" alt="InKarya Logo" width={120} height={32} className="h-8 w-auto" />
+                </Link>
+              </SheetTitle>
             </SheetHeader>
             <nav className="mt-6 px-4">
               <ul className="space-y-4">
@@ -85,6 +91,7 @@ export default async function Navbar() {
                     <Link
                       href={`/${item.toLowerCase()}`}
                       className="flex items-center py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+                      onClick={() => setIsOpen(false)}
                     >
                       {item}
                     </Link>
@@ -99,7 +106,7 @@ export default async function Navbar() {
                         className={`w-full font-medium ${item.variant === "default" ? "bg-primary text-white hover:bg-primary/90" : ""}`}
                         asChild
                       >
-                        <Link href={item.href}>{item.label}</Link>
+                        <Link href={item.href} onClick={() => setIsOpen(false)}>{item.label}</Link>
                       </Button>
                     ))}
                   </div>
