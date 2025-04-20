@@ -65,3 +65,8 @@ npm run dev
 cd ./backend
 make dev
 ```
+
+### 📘 Dokumentasi API
+
+Setelah backend berjalan, dokumentasi API bisa diakses melalui:
+http://localhost:8080/api/v1/docs

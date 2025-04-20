@@ -21,7 +21,7 @@ import { motion } from "framer-motion";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#fafafa]">
+    <div className="min-h-screen bg-[#fafafa] overflow-x-hidden">
       {/* Hero Section */}
       <section className="py-16 md:py-24">
         <div className="container px-4 mx-auto">
@@ -120,7 +120,7 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2>
+              <h2 className="text-center md:text-left">
                 Fitur-Fitur yang Tersedia
               </h2>
               <div className="space-y-6">
@@ -299,7 +299,7 @@ export default function Home() {
       <section className="py-16 md:py-24">
         <div className="container px-4 mx-auto">
           <motion.h2 
-            className="text-3xl md:text-4xl font-bold mb-12 font-inter"
+            className="text-3xl md:text-4xl font-bold mb-12 font-inter text-center md:text-left"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -438,7 +438,7 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2>
+              <h2 className="text-center md:text-left">
                 FAQ
               </h2>
               <Accordion type="single" collapsible className="w-full">
